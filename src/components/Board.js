@@ -58,9 +58,6 @@ const Board = () => {
 				<Square state={gameState[8]} handleClick={() => handleClick(8)} />
 			</div>
 
-			{/* <div>
-				<p className='message blue-grey darken-1 z-depth-2 white-text'> Player O won</p>
-			</div> */}
 			<div>
 				<br />
 				<br />
