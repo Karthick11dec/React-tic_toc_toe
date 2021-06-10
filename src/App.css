@@ -1,7 +1,5 @@
 body {
 	text-align: center;
-	width: 100vw;
-	height: 100vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -16,7 +14,7 @@ body {
 	width: 80px;
 }
 .card-title {
-	font-weight: bolder;
+	font-weight: 400 !important;
 }
 .row-margin-bottom {
 	margin-bottom: 0;

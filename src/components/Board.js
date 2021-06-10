@@ -1,18 +1,27 @@
 import Square from './Square';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+
+
 const Board = () => {
-	const initialState = ['', '', '', '', '', '', '', '', ''];
+
+	const initialState = useMemo(() => {
+		return ['', '', '', '', '', '', '', '', '']
+	}, [])
+
 	const [gameState, setGameState] = useState(initialState);
 	const [player1, setPlayer1] = useState(true);
-	console.log(gameState);
+
 	const handleClick = (i) => {
-		let array = Array.from(gameState);
-		array[i] = player1 ? 'X' : 'O';
-		setGameState(array);
-		setPlayer1(!player1);
+		let array = [...gameState];
+		if (array[i] === '') {
+			array[i] = player1 ? 'X' : 'O';
+			setGameState(array);
+			setPlayer1(!player1);
+		}
 	};
 
-	const checkWinner = () => {
+	const checkWinner = useMemo(() => {
+
 		const lines = [
 			[0, 1, 2],
 			[3, 4, 5],
@@ -23,25 +32,29 @@ const Board = () => {
 			[0, 4, 8],
 			[2, 4, 6],
 		];
+
 		for (let i = 0; i < lines.length; i++) {
-			const [a, b, c] = lines[i];
-			if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
-				return gameState[a];
+			const [a, b, c] = lines[i];// 0 -7 
+			// console.log(lines[i])
+			if (gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+				return gameState[a]; // O or X -anyone
 			}
 		}
-		return null;
-	};
+		return null
+	}
+		, [gameState])
+
+
 	useEffect(() => {
-		let winner = checkWinner();
+		let winner = checkWinner;
 		if (winner) {
-			const M = window.M;
-			M.toast({ html: `Player "${winner}" Won` });
+			window.M.toast({ html: `Player "${winner}" Won` });
 			setGameState(initialState);
 		}
-	}, [gameState]);
+	}, [initialState, checkWinner]);
 
 	return (
-		<div className='board'>
+		<div >
 			<div className='row row-margin-bottom'>
 				<Square state={gameState[0]} handleClick={() => handleClick(0)} />
 				<Square state={gameState[1]} handleClick={() => handleClick(1)} />
@@ -57,7 +70,6 @@ const Board = () => {
 				<Square state={gameState[7]} handleClick={() => handleClick(7)} />
 				<Square state={gameState[8]} handleClick={() => handleClick(8)} />
 			</div>
-
 			<div>
 				<br />
 				<br />
